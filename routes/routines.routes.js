@@ -10,6 +10,7 @@ router.post("/", tokenValidation, adminValidation, async (req, res, next) => {
     try {
         //destructuración
         const { level, series, rest, workouts } = req.body
+
         const response = await Routine.create({
             level,
             series,
@@ -31,28 +32,34 @@ router.get("/", tokenValidation, adminValidation, async (req, res, next) => {
     }
 })
 // GET "/api/routines/:routinesId"
-router.get("/", tokenValidation, adminValidation, async (req, res, next) => {
+router.get("/:routinesId", tokenValidation, adminValidation, async (req, res, next) => {
     try {
-        const getRoutineById = await Routine.findById(req.params.routinesId)
+        const getRoutineById = await Routine.findById(req.params.routinesId).populate("workouts")
         res.status(200).json(getRoutineById)
     } catch (error) {
         next(error)
     }
 })
 // PUT "/api/routines/:routinesId"
-router.put("/", tokenValidation, adminValidation, async (req, res, next) => {
+router.put("/:routinesId", tokenValidation, adminValidation, async (req, res, next) => {
     try {
-        const editRoutine = await Routine.findByIdAndUpdate(req.params.routinesId)
+        const { level, series, rest, workouts } = req.body
+        const editRoutine = await Routine.findByIdAndUpdate(req.params.routinesId, {
+            level,
+            series,
+            rest,
+            workouts  
+        })
         res.status(200).json(editRoutine)
     } catch (error) {
         next(error)
     }
 })
 // DELETE "/api/routines/:routinesId"
-router.delete("/", tokenValidation, adminValidation, async (req, res, next) => {
+router.delete("/:routinesId", tokenValidation, adminValidation, async (req, res, next) => {
     try {
         await Routine.findByIdAndDelete(req.params.routinesId)
-        res.status(202)
+        res.status(202).json({message: "deleted!"})
     } catch (error) {
         next(error)
     }

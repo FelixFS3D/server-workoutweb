@@ -72,7 +72,7 @@ router.put("/:workoutId", tokenValidation, adminValidation, async (req, res, nex
 router.delete("/:workoutId", tokenValidation, adminValidation, async (req, res, next) => {
     try {
         await Workout.findByIdAndDelete(req.params.workoutId)
-        res.status(204).json({message:"delete!"})
+        res.status(204).json({message:"deleted!"})
     } catch (error) {
         next(error)
     }
