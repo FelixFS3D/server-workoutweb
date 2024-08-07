@@ -13,7 +13,7 @@ const userSchema = new Schema(
     },
     name: String,
     imgUser: String,
-    rotines: {
+    routines: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Routine" // apunta SIEMPRE hacia module.exports = Routine
     },

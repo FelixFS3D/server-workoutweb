@@ -49,7 +49,20 @@ router.get("/:workoutId", tokenValidation, adminValidation, async (req, res, nex
 // PUT "/api/workouts/:workoutId"
 router.put("/:workoutId", tokenValidation, adminValidation, async (req, res, next) => {
     try {
-        const editWorkout = await Workout.findByIdAndUpdate(req.params.workoutId)
+        const {
+            workout,
+            muscle,
+            reps,
+            videoDemo,
+            imgWork
+        } = req.body
+        const editWorkout = await Workout.findByIdAndUpdate(req.params.workoutId, {
+        workout,
+        muscle,
+        reps,
+        videoDemo,
+        imgWork 
+        }, {new: true})
         res.status(200).json(editWorkout)
     } catch (error) {
         next(error)
@@ -59,11 +72,10 @@ router.put("/:workoutId", tokenValidation, adminValidation, async (req, res, nex
 router.delete("/:workoutId", tokenValidation, adminValidation, async (req, res, next) => {
     try {
         await Workout.findByIdAndDelete(req.params.workoutId)
-        res.status(202)
+        res.status(204).json({message:"delete!"})
     } catch (error) {
         next(error)
     }
 })
-
 
 module.exports = router
