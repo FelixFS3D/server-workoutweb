@@ -11,10 +11,14 @@ router.put("/:usersId", tokenValidation, async (req, res, next) => {
          const {
             name,
             routines,
+            password,
+            imgUser
         } = req.body
         const response = await User.findByIdAndUpdate(req.params.usersId, {
             name,
             routines,
+            password,
+            imgUser
         }, {new: true})
         res.status(201).json(response)
     } catch (error) {
