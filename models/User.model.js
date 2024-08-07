@@ -1,4 +1,5 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, default: mongoose } = require("mongoose");
+const { tokenValidation, adminValidation } = require("../middlewares/auth.middlewares")
 
 
 const userSchema = new Schema(
@@ -12,9 +13,18 @@ const userSchema = new Schema(
     },
     name: String,
     imgUser: String,
+    rotines: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Routine" // apunta SIEMPRE hacia module.exports = Routine
+    },
     password: {
       type: String,
       required: [true, 'Password is required.']
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user"
     }
   },
   {

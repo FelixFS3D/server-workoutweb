@@ -6,8 +6,8 @@ const routineSchema = new Schema ({
 level: String,
 series: Number,
 rest: Number,
-workout:{
-    type: mongoose.Schema.Types.ObjectId,
+workouts:{
+    type: [mongoose.Schema.Types.ObjectId ],
     ref: "Workout"
 },
 
