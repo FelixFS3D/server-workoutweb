@@ -13,5 +13,8 @@ router.use("/routines", routineRouter);
 // Routes authenticator
 const authRouter = require("./auth.routes.js")
 router.use("/auth", authRouter);
+// Routes User
+const userRouter = require("./user.routes.js")
+router.use("/users", userRouter);
 
 module.exports = router;

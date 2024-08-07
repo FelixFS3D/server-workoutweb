@@ -49,7 +49,7 @@ router.put("/:routinesId", tokenValidation, adminValidation, async (req, res, ne
             series,
             rest,
             workouts  
-        })
+        }, {new: true})
         res.status(200).json(editRoutine)
     } catch (error) {
         next(error)

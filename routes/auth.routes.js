@@ -104,7 +104,6 @@ router.post("/login", async (req, res, next) => {
 
 })
 
-
 // GET "/api/auth/verify" => validar el token (existencia, autenticidad y validez)
 router.get("/verify", tokenValidation, (req, res, next) => {
 
