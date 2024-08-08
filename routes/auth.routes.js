@@ -96,7 +96,11 @@ router.post("/login", async (req, res, next) => {
       { algorithm: "HS256", expiresIn: "7d" }
     )
 
-    res.status(200).json({ authToken })
+    res.status(200).json({ 
+      authToken: authToken,
+      role: foundUser.role
+
+     })
 
   } catch (error) {
     next(error)
