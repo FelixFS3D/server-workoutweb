@@ -16,5 +16,8 @@ router.use("/auth", authRouter);
 // Routes User
 const userRouter = require("./user.routes.js")
 router.use("/users", userRouter);
+// Cloudinary
+const uploadRoutes = require("./upload.routes.js")
+router.use("/upload", uploadRoutes);
 
 module.exports = router;
