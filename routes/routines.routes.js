@@ -25,7 +25,7 @@ router.post("/", tokenValidation, adminValidation, async (req, res, next) => {
 // GET "/api/routines"
 router.get("/", tokenValidation, adminValidation, async (req, res, next) => {
     try {
-        const getAllRoutines = await Routine.find()
+        const getAllRoutines = await Routine.find().populate("workouts")
         res.status(200).json(getAllRoutines)
     } catch (error) {
         next(error)

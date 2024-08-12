@@ -4,6 +4,17 @@ const { tokenValidation, adminValidation } = require("../middlewares/auth.middle
 
 const User = require("../models/User.model.js");
 
+
+//PATCH "/api/users/routine
+router.patch("/routine", tokenValidation, async (req, res, next) => {
+    try {
+       const {routines} = req.body
+       const response = await User.findByIdAndUpdate(req.payload._id, {routines}, {new: true})
+       res.status(201).json(response)
+    } catch (error) {
+        next(error)
+    }
+})
 //PUT "/api/users/:usersId" 
 router.put("/:usersId", tokenValidation, async (req, res, next) => {
     try {
@@ -26,7 +37,7 @@ router.put("/:usersId", tokenValidation, async (req, res, next) => {
     }
 })
 // GET "/api/users/:usersId" 
-// esta ruta permite obtener por id cada una de las rutinas creadas anteriormente
+// esta ruta permite obtener por id cada una de las usuarios creados anteriormente
 router.get("/:usersId", tokenValidation, async (req, res, next) => {
     try {
         const getUserstById = await User.findById(req.params.usersId)
