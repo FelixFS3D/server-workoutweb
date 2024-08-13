@@ -1,21 +1,29 @@
 const express = require("express");
 const router = express.Router();
 const { tokenValidation, adminValidation } = require("../middlewares/auth.middlewares.js")
-
 const User = require("../models/User.model.js");
 
-
-//PATCH "/api/users/routine
-router.patch("/routine", tokenValidation, async (req, res, next) => {
+//PATCH "/api/users/routine"
+router.patch("/routine-add", tokenValidation, async (req, res, next) => {
     try {
-       const {routines} = req.body
-       const response = await User.findByIdAndUpdate(req.payload._id, {routines}, {new: true})
+       const {routineId} = req.body
+       const response = await User.findByIdAndUpdate(req.payload._id, {$addToSet:{routines: routineId}}, {new: true})
        res.status(201).json(response)
     } catch (error) {
         next(error)
     }
 })
-//PUT "/api/users/:usersId" 
+//PATCH "/api/users/routine"
+router.patch("/routine-delete", tokenValidation, async (req, res, next) => {
+    try {
+       const {routineId} = req.body
+       const response = await User.findByIdAndUpdate(req.payload._id, {$pull:{routines: routineId}}, {new: true})
+       res.status(201).json(response)
+    } catch (error) {
+        next(error)
+    }
+})
+//PUT "/api/users/:usersId"
 router.put("/:usersId", tokenValidation, async (req, res, next) => {
     try {
          // destructuración
@@ -36,14 +44,23 @@ router.put("/:usersId", tokenValidation, async (req, res, next) => {
         next(error)
     }
 })
-// GET "/api/users/:usersId" 
-// esta ruta permite obtener por id cada una de las usuarios creados anteriormente
-router.get("/:usersId", tokenValidation, async (req, res, next) => {
+// GET "/api/users/own"
+router.get("/own", tokenValidation, async (req, res, next) => {
     try {
-        const getUserstById = await User.findById(req.params.usersId)
-        res.status(200).json(getUserstById)
+        const userData = await User.findById(req.payload._id)
+            .populate({
+                path: 'routines',
+                model: 'Routine',
+                populate: {
+                    path: 'workouts',
+                    model: 'Workout',
+                    select: 'reps workout'
+                }
+            });
+
+        res.status(200).json(userData);
     } catch (error) {
-        next(error)
+        next(error);
     }
-})
+});
 module.exports = router
