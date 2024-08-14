@@ -3,6 +3,7 @@ const router = express.Router();
 const { tokenValidation, adminValidation } = require("../middlewares/auth.middlewares.js")
 const User = require("../models/User.model.js");
 
+
 //PATCH "/api/users/routine"
 router.patch("/routine-add", tokenValidation, async (req, res, next) => {
     try {
@@ -13,7 +14,18 @@ router.patch("/routine-add", tokenValidation, async (req, res, next) => {
         next(error)
     }
 })
-//PATCH "/api/users/routine"
+//PATCH "/api/users/avatar"
+// para editar la imagen del usuario
+router.patch("/avatar", tokenValidation, async (req, res, next) => {
+    try {
+       const {imgUser} = req.body
+       const response = await User.findByIdAndUpdate(req.payload._id, {imgUser}, {new: true})
+       res.status(201).json(response)
+    } catch (error) {
+        next(error)
+    }
+})
+//PATCH "/api/users/routine-delete"
 router.patch("/routine-delete", tokenValidation, async (req, res, next) => {
     try {
        const {routineId} = req.body
@@ -44,7 +56,19 @@ router.put("/:usersId", tokenValidation, async (req, res, next) => {
         next(error)
     }
 })
+
+// GET 
+router.get("/", tokenValidation, async (req, res, next) => {
+    try {
+        const getUserImage = await User.findById(req.payload._id)
+        res.status(200).json(getUserImage);
+    } catch (error) {
+        next(error);
+    }
+})
+
 // GET "/api/users/own"
+// ruta que trae las rutinas de un usuario
 router.get("/own", tokenValidation, async (req, res, next) => {
     try {
         const userData = await User.findById(req.payload._id)
@@ -63,4 +87,6 @@ router.get("/own", tokenValidation, async (req, res, next) => {
         next(error);
     }
 });
+
+
 module.exports = router

@@ -3,6 +3,7 @@ const Schema = mongoose.Schema
 
 const routineSchema = new Schema ({
 
+name: String,
 level: String,
 series: Number,
 rest: Number,

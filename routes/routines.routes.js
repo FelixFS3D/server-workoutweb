@@ -9,9 +9,10 @@ const { tokenValidation, adminValidation } = require("../middlewares/auth.middle
 router.post("/", tokenValidation, adminValidation, async (req, res, next) => {
     try {
         //destructuración
-        const { level, series, rest, workouts } = req.body
+        const { name, level, series, rest, workouts } = req.body
 
         const response = await Routine.create({
+            name,
             level,
             series,
             rest,
@@ -23,7 +24,7 @@ router.post("/", tokenValidation, adminValidation, async (req, res, next) => {
     }
 })
 // GET "/api/routines"
-router.get("/", tokenValidation, adminValidation, async (req, res, next) => {
+router.get("/", tokenValidation, async (req, res, next) => {
     try {
         const getAllRoutines = await Routine.find().populate("workouts")
         res.status(200).json(getAllRoutines)
@@ -32,7 +33,7 @@ router.get("/", tokenValidation, adminValidation, async (req, res, next) => {
     }
 })
 // GET "/api/routines/:routinesId"
-router.get("/:routinesId", tokenValidation, adminValidation, async (req, res, next) => {
+router.get("/:routinesId", tokenValidation, async (req, res, next) => {
     try {
         const getRoutineById = await Routine.findById(req.params.routinesId).populate("workouts")
         res.status(200).json(getRoutineById)
@@ -43,8 +44,9 @@ router.get("/:routinesId", tokenValidation, adminValidation, async (req, res, ne
 // PUT "/api/routines/:routinesId"
 router.put("/:routinesId", tokenValidation, adminValidation, async (req, res, next) => {
     try {
-        const { level, series, rest, workouts } = req.body
+        const { name, level, series, rest, workouts } = req.body
         const editRoutine = await Routine.findByIdAndUpdate(req.params.routinesId, {
+            name,
             level,
             series,
             rest,
