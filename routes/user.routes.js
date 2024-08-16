@@ -23,6 +23,7 @@ router.patch("/avatar", tokenValidation, async (req, res, next) => {
        res.status(201).json(response)
     } catch (error) {
         next(error)
+    
     }
 })
 //PATCH "/api/users/routine-delete"
